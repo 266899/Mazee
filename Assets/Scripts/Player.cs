@@ -27,10 +27,12 @@ public class Player : MonoBehaviour {
         {
             youDiedCanvas.enabled = true;
 
+
             if (!playerDied.isPlaying && !played)
             {
                 playerDied.Play();
                 played = true;
+                StartCoroutine(LoadLevelAfterDelay());
             }
         }
 	}
@@ -42,5 +44,11 @@ public class Player : MonoBehaviour {
             Debug.Log("next");
             SceneManager.LoadScene(2);
         }
+    }
+
+    IEnumerator LoadLevelAfterDelay()
+    {
+        yield return new WaitForSeconds(4f);
+        SceneManager.LoadScene(0);
     }
 }

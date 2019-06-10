@@ -385,7 +385,7 @@ namespace VRTK
                 //ADDED
                 if (gameObject.tag == "Potion")
                 {
-                    FindObjectOfType<AudioManager>().Play("Drinking");
+                    FindObjectOfType<AudioManager>().Play("PotPickup");
                     potion.AddPotion();
                     Debug.Log("added pot"); 
                     Debug.Log(potion.GetPotionCount());

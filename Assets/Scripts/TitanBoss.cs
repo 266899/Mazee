@@ -21,6 +21,7 @@ public class TitanBoss : MonoBehaviour
     public Player player;
     private bool running;
     public static bool alive;
+    public AudioSource bossWalking;
 
     // Start is called before the first frame update
     void Start()
@@ -51,13 +52,19 @@ public class TitanBoss : MonoBehaviour
             agent.SetDestination(playerPosition.position);
             agent.stoppingDistance = stoppingDistance;
 
-            if (distance <= agent.stoppingDistance)
+            if (!bossWalking.isPlaying)
             {
+                bossWalking.Play();
+            }
+
+            if (distance <= agent.stoppingDistance +.2f)
+            {
+                bossWalking.Stop();
                 // Face the player
                 FacePlayer();
             }
 
-            if (distance <= agent.stoppingDistance && !running)
+            if (distance <= agent.stoppingDistance +.2f && !running)
             {
                 //Attack player
                 Debug.Log("atatcked");
@@ -132,6 +139,7 @@ public class TitanBoss : MonoBehaviour
     {
         animator.SetTrigger("dying");
         titanCollider.enabled = false;
+        FindObjectOfType<AudioManager>().Play("TitanDeath");
         yield return new WaitForSeconds(2f);
         gameObject.SetActive(false);
         alive = false;

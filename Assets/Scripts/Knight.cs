@@ -20,6 +20,7 @@ public class Knight : MonoBehaviour
     private Rigidbody rb;
     public Player player;
     private bool running;
+    public AudioSource knightWalking;
 
 
     // Start is called before the first frame update
@@ -49,18 +50,25 @@ public class Knight : MonoBehaviour
         // If player is close, start following
         if (distance <= followRadius)
         {
+            
             agent.enabled = true;
             animator.enabled = true;
             agent.SetDestination(playerPosition.position);
             agent.stoppingDistance = stoppingDistance;
 
-            if (distance <= agent.stoppingDistance)
+            if (!knightWalking.isPlaying)
             {
+                knightWalking.Play();
+            }
+
+            if (distance <= agent.stoppingDistance + .2f)
+            {
+                knightWalking.Stop();
                 // Face the player
                 FacePlayer();
             }
 
-            if (distance <= agent.stoppingDistance && !running)
+            if (distance <= agent.stoppingDistance +.2f && !running)
             {
                 //Attack player
                 Attack();
@@ -72,6 +80,8 @@ public class Knight : MonoBehaviour
     {
         float movSpeed = agent.velocity.magnitude / agent.speed;
         animator.SetFloat("movSpeed", movSpeed, smoothTime, Time.deltaTime);
+        
+
     }
 
     public void Attack()
@@ -130,6 +140,7 @@ public class Knight : MonoBehaviour
     IEnumerator Die()
     {
         animator.SetTrigger("dying");
+        FindObjectOfType<AudioManager>().Play("KnightDeath");
         knightCollider.enabled = false;
         yield return new WaitForSeconds(2f);
         gameObject.SetActive(false);

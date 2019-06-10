@@ -36,6 +36,7 @@
             state = !state;
             if (potion.GetPotionCount() > 0)
             {
+                FindObjectOfType<AudioManager>().Play("Drinking");
                 Debug.Log("heal");
                 playerScript.playerHealth += 30f;
                 potion.RemovePotion();

@@ -22,6 +22,8 @@ public class Spider : MonoBehaviour
     public Player player;
     private bool running;
 
+    public AudioSource spiderWalking;
+
 
 
     // Start is called before the first frame update
@@ -48,19 +50,23 @@ public class Spider : MonoBehaviour
         float distance = Vector3.Distance(playerPosition.position, transform.position);
 
         // If player is close, start following
-        if (distance <= followRadius)
+        if (distance < followRadius)
         {
             agent.SetDestination(playerPosition.position);
             agent.stoppingDistance = stoppingDistance;
-            FindObjectOfType<AudioManager>().Play("SpiderWalking");
 
-            if (distance <= agent.stoppingDistance)
+            if (!spiderWalking.isPlaying) {
+                spiderWalking.Play();
+            }
+
+            if (distance <= agent.stoppingDistance + .2f)
             {
+                spiderWalking.Stop();
                 // Face the player
                 FacePlayer();
             }
 
-            if (distance <= agent.stoppingDistance && !running)
+            if (distance <= agent.stoppingDistance + .2f && !running)
                 {
                 //Attack player
                 Attack();
@@ -119,6 +125,7 @@ public class Spider : MonoBehaviour
             spiderMaterial.color = Color.white;
             Debug.Log("-" + "damage");
             health -= damage;
+            FindObjectOfType<AudioManager>().Play("SpiderHit");
 
             if (health <= 0)
             {
@@ -131,14 +138,8 @@ public class Spider : MonoBehaviour
     {
         animator.SetTrigger("dying");
         spiderCollider.enabled = false;
+        FindObjectOfType<AudioManager>().Play("SpiderDeath");
         yield return new WaitForSeconds(2f);
         gameObject.SetActive(false);
     }
-
-    //void Die()
-    //{
-    //    animator.SetTrigger("dying");
-    //    spiderCollider.enabled = false;
-    //    Destroy(gameObject, 5f);
-    //}
 }
