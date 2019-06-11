@@ -9,11 +9,13 @@ public class Player : MonoBehaviour {
     public Canvas youDiedCanvas;
     private bool played;
     public AudioSource playerDied;
+    private Rigidbody rb;
 
     // Use this for initialization
     void Start () {
         youDiedCanvas.enabled = false;
         played = false;
+        rb = GetComponent<Rigidbody>();
 	}
 	
 	// Update is called once per frame
@@ -32,7 +34,7 @@ public class Player : MonoBehaviour {
             {
                 playerDied.Play();
                 played = true;
-                StartCoroutine(LoadLevelAfterDelay());
+                StartCoroutine(LoadNextLevelAfterDelay());
             }
         }
 	}
@@ -41,12 +43,12 @@ public class Player : MonoBehaviour {
     {
         if (other.tag.Equals("NextLevelTrigger"))
         {
-            Debug.Log("next");
             SceneManager.LoadScene(2);
         }
+
     }
 
-    IEnumerator LoadLevelAfterDelay()
+    IEnumerator LoadNextLevelAfterDelay()
     {
         yield return new WaitForSeconds(4f);
         SceneManager.LoadScene(0);

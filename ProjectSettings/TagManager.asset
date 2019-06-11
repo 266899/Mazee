@@ -24,6 +24,7 @@ TagManager:
   - SkeletonAxe
   - Knight
   - NextLevelTrigger
+  - Chest
   layers:
   - Default
   - TransparentFX

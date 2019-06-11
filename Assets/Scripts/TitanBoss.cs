@@ -32,6 +32,7 @@ public class TitanBoss : MonoBehaviour
         running = false;
         titanMaterial.color = Color.white;
         alive = true;
+        FindObjectOfType<AudioManager>().Play("TitanIdle");
     }
 
     // Update is called once per frame
@@ -87,8 +88,14 @@ public class TitanBoss : MonoBehaviour
         Debug.Log("asd"  + randomAttack);
         animator.SetTrigger("attack" +  randomAttack);
         player.playerHealth -= damage;
-        FindObjectOfType<AudioManager>().Play("PlayerHit");
+        FindObjectOfType<AudioManager>().Play("TitanAttack");
         Debug.Log(player.playerHealth);
+    }
+
+    IEnumerator Wait1Second()
+    {
+        yield return new WaitForSeconds(1f);
+        FindObjectOfType<AudioManager>().Play("PlayerHit");
     }
 
     IEnumerator WaitSecond()

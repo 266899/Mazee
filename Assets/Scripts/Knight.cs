@@ -80,17 +80,22 @@ public class Knight : MonoBehaviour
     {
         float movSpeed = agent.velocity.magnitude / agent.speed;
         animator.SetFloat("movSpeed", movSpeed, smoothTime, Time.deltaTime);
-        
-
     }
 
     public void Attack()
     {
         StartCoroutine(WaitSecond());
         animator.SetTrigger("attack");
-        FindObjectOfType<AudioManager>().Play("PlayerHit");
+        FindObjectOfType<AudioManager>().Play("SwordSwing");
+        StartCoroutine(Wait1Second());
         player.playerHealth -= damage;
         Debug.Log(player.playerHealth);
+    }
+
+    IEnumerator Wait1Second()
+    {
+        yield return new WaitForSeconds(1f);
+        FindObjectOfType<AudioManager>().Play("PlayerHit");
     }
 
     IEnumerator WaitSecond()
